@@ -10,21 +10,38 @@ const play = {
   shot: 0,
   hit: 0,
   dead: 0,
+  set updateData(data) {
+    this[data] += 1;
+    this.render();
+  },
+  render() {
+    record.textContent = this.record;
+    shot.textContent = this.shot;
+    hit.textContent = this.hit;
+    dead.textContent = this.dead;
+  },
 };
 
 const show = {
-    hit() {
-
-    },
-    miss(elem) {
-        
-    },
-    dead() {
-        
-    }
-}
+  hit() {},
+  miss(elem) {
+    this.changeClass(elem, "miss");
+  },
+  dead() {},
+  changeClass(elem, value) {
+    elem.className = value;
+  },
+};
 
 const fire = (event) => {
-  const target = event.target
+  const target = event.target;
+  if (target.classList.length !== 0 || target.tagName !== 'TD') return;
   show.miss(target);
+  play.updateData = "shot";
 };
+
+const init = () => {
+  enemy.addEventListener("click", fire);
+};
+
+init();
